@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#0b1020" />
+  <title>InsightForge | Dashboard as Code</title>
+  <link rel="stylesheet" href="./style.css" />
+  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js" defer></script>
+  <script src="./app.js" defer></script>
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="brand"><span class="mark">◈</span> Insight<span>Forge</span></div>
+      <div class="nav-label">WORKSPACE</div>
+      <div class="nav-active">▦ &nbsp; Overview</div>
+      <div class="nav-muted">◷ &nbsp; Analytics</div>
+      <div class="nav-muted">◇ &nbsp; Data sources</div>
+      <div class="sidebar-bottom"><div class="live-dot"></div> YAML-powered analytics<br><small>Version 0.1.0 · MVP</small></div>
+    </aside>
+    <main class="content">
+      <header><div><div class="eyebrow">ANALYTICS / OVERVIEW</div><h1 id="title">InsightForge</h1><p id="subtitle">Loading dashboard definition...</p></div><div class="header-right"><span class="status">● Live preview</span><a class="github" href="https://github.com/jmnzcn/insightforge" target="_blank" rel="noopener">View source ↗</a></div></header>
+      <section class="filters"><div class="filter-label">FILTER DATA</div><label>Region<select id="region"><option value="">All regions</option></select></label><label>Category<select id="category"><option value="">All categories</option></select></label><button id="reset">Reset filters ↺</button><div class="record-count" id="records"></div></section>
+      <section class="kpis" id="kpis"></section>
+      <section class="charts" id="charts"></section>
+      <footer><span>◈ InsightForge · Dashboard as Code</span><span>Data is synthetic · Built with Python + YAML + Plotly</span></footer>
+    </main>
+  </div>
+</body>
+</html>

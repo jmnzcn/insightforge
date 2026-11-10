@@ -1,0 +1,38 @@
+title: InsightForge
+subtitle: Revenue intelligence · Synthetic retail dataset
+date_column: date
+dimensions:
+  - region
+  - category
+metrics:
+  - id: revenue
+    label: Total revenue
+    column: revenue
+    aggregation: sum
+    format: currency
+  - id: orders
+    label: Orders
+    column: orders
+    aggregation: sum
+    format: integer
+  - id: units
+    label: Units sold
+    column: units
+    aggregation: sum
+    format: integer
+charts:
+  - id: revenue_trend
+    title: Revenue over time
+    type: line
+    x: date
+    metric: revenue
+  - id: category_mix
+    title: Revenue by category
+    type: bar
+    x: category
+    metric: revenue
+  - id: region_mix
+    title: Revenue by region
+    type: donut
+    x: region
+    metric: revenue
