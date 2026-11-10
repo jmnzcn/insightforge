@@ -1,0 +1,65 @@
+name: Browser E2E verification
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+  schedule:
+    - cron: '30 10 * * *'
+permissions:
+  contents: read
+jobs:
+  local:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: python -m pip install -r requirements.txt
+      - run: python scripts/build_dashboard.py
+      - run: python -m unittest discover -s tests -v
+      - run: npm install
+      - run: npx playwright install --with-deps chromium
+      - name: Fetch public cyber intelligence
+        run: python pipelines/cybersecurity/build.py
+      - name: Start local web server
+        run: |
+          python -m http.server 8000 -d site > /tmp/insightforge-http.log 2>&1 &
+          echo $! > /tmp/insightforge-http.pid
+      - name: Browser tests against generated site
+        run: npx playwright test --project=local
+      - name: Upload screenshots and reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: insightforge-local-browser-evidence
+          path: |
+            playwright-report/
+            test-results/
+          if-no-files-found: ignore
+  live:
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install
+      - run: npx playwright install --with-deps chromium
+      - name: Browser tests against GitHub Pages
+        run: npx playwright test --project=live
+      - name: Upload screenshots and reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: insightforge-live-browser-evidence
+          path: |
+            playwright-report/
+            test-results/
+          if-no-files-found: ignore
