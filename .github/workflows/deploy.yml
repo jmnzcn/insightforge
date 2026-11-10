@@ -26,6 +26,9 @@ jobs:
         run: python -m unittest discover -s tests -v
       - name: Compile dashboard
         run: python scripts/build_dashboard.py
+      - name: Fetch and compile cybersecurity intelligence
+        if: github.event_name != 'pull_request'
+        run: python pipelines/cybersecurity/build.py
       - name: Upload static site
         if: github.event_name != 'pull_request'
         uses: actions/upload-pages-artifact@v3
