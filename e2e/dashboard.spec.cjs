@@ -1,7 +1,7 @@
 const { test, expect } = require('@playwright/test');
 
 test('overview dashboard renders KPI cards and interactive charts', async ({ page }) => {
-  await page.goto('/index.html', { waitUntil: 'domcontentloaded' });
+  await page.goto('index.html', { waitUntil: 'domcontentloaded' });
   await expect(page.locator('#title')).toHaveText('InsightForge');
   await expect(page.locator('#kpis .kpi')).toHaveCount(3);
   await expect(page.locator('#charts .chart-card')).toHaveCount(3);
@@ -15,7 +15,7 @@ test('overview dashboard renders KPI cards and interactive charts', async ({ pag
 });
 
 test('cybersecurity dashboard loads public-data bundle and responds to filters', async ({ page, request }) => {
-  const response = await request.get('/cybersecurity.json');
+  const response = await request.get('cybersecurity.json');
   expect(response.ok(), 'cybersecurity.json must be publicly served').toBeTruthy();
   const bundle = await response.json();
   expect(bundle.sources.kev).toContain('cisa.gov');
@@ -24,7 +24,7 @@ test('cybersecurity dashboard loads public-data bundle and responds to filters',
   expect(bundle.rows.length).toBeGreaterThan(0);
   expect(bundle.rows[0].cve).toMatch(/^CVE-\d{4}-\d{4,}$/);
   expect(bundle.rows.some(r => r.epss !== null)).toBeTruthy();
-  await page.goto('/cybersecurity.html', { waitUntil: 'domcontentloaded' });
+  await page.goto('cybersecurity.html', { waitUntil: 'domcontentloaded' });
   await expect(page.locator('#kpis .kpi')).toHaveCount(3);
   await expect(page.locator('#vendors.js-plotly-plot')).toBeVisible();
   await expect(page.locator('#epss.js-plotly-plot')).toBeVisible();
