@@ -3,12 +3,16 @@ on:
   pull_request:
     branches: [main]
   workflow_dispatch:
+  workflow_run:
+    workflows: ['Validate and deploy dashboard']
+    types: [completed]
   schedule:
     - cron: '30 10 * * *'
 permissions:
   contents: read
 jobs:
   local:
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -42,7 +46,7 @@ jobs:
             test-results/
           if-no-files-found: ignore
   live:
-    if: github.event_name != 'pull_request'
+    if: github.event_name != 'pull_request' && (github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success')
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
