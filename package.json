@@ -1,0 +1,12 @@
+{
+  "name": "insightforge-e2e",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "test:e2e": "playwright test",
+    "test:e2e:live": "playwright test --project=live"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.58.0"
+  }
+}
